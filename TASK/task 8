@@ -1,1 +1,134 @@
+AIM:
 
+To create a simple Employee Management module using Spring Core and demonstrate Inversion of Control (IoC) and Dependency Injection (DI) using annotations such as @Component and @Autowired. The application should use BeanFactory to manage beans and store employee data in memory.
+
+PROCEDURE:
+
+Create a simple Spring Core project using Java.
+
+Create a class Employee with attributes:
+
+Employee ID
+Employee Name
+Department
+
+Create a class EmployeeService and annotate it with @Component to make it a Spring bean.
+
+Use @Autowired to inject the Employee object into the service class (Dependency Injection).
+
+Use BeanFactory to load the Spring configuration and manage beans.
+
+Store employee data in memory using simple variables or a list.
+
+Create a main class to:
+
+Load the Spring container
+Get the EmployeeService bean
+Add employee details
+Display employee details
+
+Run the program and verify that Spring automatically creates and injects the required objects.
+
+CODE:
+Employee.java
+package com.spring.employee;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class Employee {
+
+    private int empId;
+    private String empName;
+    private String department;
+
+    public Employee() {
+    }
+
+    public int getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(int empId) {
+        this.empId = empId;
+    }
+
+    public String getEmpName() {
+        return empName;
+    }
+
+    public void setEmpName(String empName) {
+        this.empName = empName;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+}
+EmployeeService.java
+package com.spring.employee;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class EmployeeService {
+
+    @Autowired
+    private Employee employee;
+
+    public void addEmployee(int id, String name, String dept) {
+        employee.setEmpId(id);
+        employee.setEmpName(name);
+        employee.setDepartment(dept);
+    }
+
+    public void displayEmployee() {
+        System.out.println("Employee ID: " + employee.getEmpId());
+        System.out.println("Employee Name: " + employee.getEmpName());
+        System.out.println("Department: " + employee.getDepartment());
+    }
+}
+applicationContext.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- Enable Annotation Scanning -->
+    <context:component-scan base-package="com.spring.employee"/>
+
+</beans>
+MainApp.java
+package com.spring.employee;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class MainApp {
+
+    public static void main(String[] args) {
+
+        BeanFactory factory =
+                new ClassPathXmlApplicationContext("applicationContext.xml");
+
+        EmployeeService service = factory.getBean(EmployeeService.class);
+
+        service.addEmployee(101, "Arun", "IT");
+        service.displayEmployee();
+    }
+}
+RESULT:
+
+Thus, a simple Employee Management module was successfully created using Spring Core.
+Inversion of Control (IoC) and Dependency Injection (DI) were implemented using @Component and @Autowired annotations.
+The BeanFactory container successfully managed the beans, and employee data was stored and displayed in memory using Spring-managed objects.
