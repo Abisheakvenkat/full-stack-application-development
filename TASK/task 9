@@ -1,1 +1,138 @@
+AIM:
 
+To develop a basic Spring MVC application using annotation-based configuration. Create a controller to accept user requests and display employee details using the MVC flow without XML configuration.
+
+PROCEDURE:
+
+Create a Dynamic Web Project in Eclipse.
+
+Add Spring MVC libraries to the project.
+
+Create a Java package (for example: com.spring.mvc).
+
+Create a class Employee with the fields:
+
+Employee ID
+Employee Name
+Department
+
+Create a Controller class using @Controller annotation.
+
+Use @RequestMapping to accept user requests.
+
+Use Model object to send employee data from controller to the view.
+
+Create a configuration class using @Configuration, @EnableWebMvc, and @ComponentScan (no XML configuration).
+
+Create a JSP page to display employee details.
+
+Run the application using Apache Tomcat Server.
+
+Test the application by opening the URL in the browser and verify that employee details are displayed using MVC flow.
+
+CODE:
+Employee.java
+package com.spring.mvc;
+
+public class Employee {
+
+    private int empId;
+    private String empName;
+    private String department;
+
+    public Employee(int empId, String empName, String department) {
+        this.empId = empId;
+        this.empName = empName;
+        this.department = department;
+    }
+
+    public int getEmpId() {
+        return empId;
+    }
+
+    public String getEmpName() {
+        return empName;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+}
+EmployeeController.java
+package com.spring.mvc;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class EmployeeController {
+
+    @RequestMapping("/employee")
+    public String showEmployee(Model model) {
+
+        Employee emp = new Employee(101, "Arun", "IT");
+
+        model.addAttribute("emp", emp);
+
+        return "employee";
+    }
+}
+WebConfig.java (Configuration class – No XML)
+package com.spring.mvc;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+@Configuration
+@EnableWebMvc
+@ComponentScan(basePackages = "com.spring.mvc")
+public class WebConfig {
+}
+DispatcherServlet Configuration (Initializer Class)
+package com.spring.mvc;
+
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+public class AppInitializer 
+        extends AbstractAnnotationConfigDispatcherServletInitializer {
+
+    @Override
+    protected Class<?>[] getRootConfigClasses() {
+        return null;
+    }
+
+    @Override
+    protected Class<?>[] getServletConfigClasses() {
+        return new Class[] { WebConfig.class };
+    }
+
+    @Override
+    protected String[] getServletMappings() {
+        return new String[] { "/" };
+    }
+}
+employee.jsp (View Page)
+
+Create this file inside: WebContent/WEB-INF/views/employee.jsp
+
+<%@ page contentType="text/html;charset=UTF-8" %>
+<html>
+<head>
+    <title>Employee Details</title>
+</head>
+<body>
+
+<h2>Employee Details</h2>
+
+Employee ID: ${emp.empId} <br>
+Employee Name: ${emp.empName} <br>
+Department: ${emp.department}
+
+</body>
+</html>
+RESULT:
+
+Thus, a basic Spring MVC application was successfully developed using annotation-based configuration without XML.
+The controller successfully accepted user requests using @RequestMapping, employee data was passed using the Model object, and the details were displayed in the JSP view using the MVC architecture.
